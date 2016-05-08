@@ -7,6 +7,13 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "^6.2"
+        "guzzlehttp/guzzle": "^6.2",
+        "vlucas/phpdotenv": "^2.2",
+        "symfony/var-dumper": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tael\\Nosp\\": "src/"
+        }
     }
 }
