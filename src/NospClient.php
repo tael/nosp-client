@@ -56,11 +56,19 @@ class NospClient
         // TODO: how to check success?
     }
 
-    public function create()
+    public function create(AdInput $adInput, $campId, $adMngStep)
     {
-        $requestData = new CreateRequestData("AMS01", "1132997");
-        $requestData->addItem(new AdInput());
+//        {"adMngStep":"AMS01","listAdInput":[{"saleunitId":"1254A_GT1","unitId":"1254A","unitDesc":"M_메인_패션뷰티_컨텐츠형광고","paymentCd":"PM3","adtypeCd":"LA2","adprodexpssCd":"APTX01","adprodCd":"P398","adprodNm":"[모바일]메인_패션뷰티_컨텐츠형","startDttm":"20160718000000","endDttm":"20160724235959","targetCd":"","freqCd":"","freqVal":"","detailMny":"5000000","priceMny":"5000000","finalMny":"5000000","incPct":"1","incMny":"0","decPct":"1","decMny":"0","executePriceId":"11008162","totalInv":"8","availInv":"1","buyQty":"1","tokenId":"","brandsaNo":"0","brandsaQc":"0","brandsaKwdGrpId":"","bidId":"","videolivetokenId":"","parentUnitId":""}],"campId":"1133260"}
+//        $realJson='{"adMngStep":"AMS01","listAdInput":[{"saleunitId":"1254A_GT1","unitId":"1254A","unitDesc":"M_메인_패션뷰티_컨텐츠형광고","paymentCd":"PM3","adtypeCd":"LA2","adprodexpssCd":"APTX01","adprodCd":"P398","adprodNm":"[모바일]메인_패션뷰티_컨텐츠형","startDttm":"20160718000000","endDttm":"20160724235959","targetCd":"","freqCd":"","freqVal":"","detailMny":"5000000","priceMny":"5000000","finalMny":"5000000","incPct":"1","incMny":"0","decPct":"1","decMny":"0","executePriceId":"11008162","totalInv":"8","availInv":"1","buyQty":"1","tokenId":"","brandsaNo":"0","brandsaQc":"0","brandsaKwdGrpId":"","bidId":"","videolivetokenId":"","parentUnitId":""}],"campId":"1133260"}';
+//        $realJson = json_encode(json_decode($realJson));
+//        dump($realJson);
+//        die;
+
+        $requestData = new CreateRequestData($adMngStep, $campId);
+        $requestData->addItem($adInput);
         $json = json_encode($requestData);
+//        assert($realJson==$json);
+//        dump($json); die;
         $response = $this->client->post(
             'http://nosp.da.naver.com/center/sales/campaign/adline/create?_JSON-TYPE_-REQ_=Y',
             [
@@ -71,12 +79,12 @@ class NospClient
                 ],
             ]
         );
-//        {"success":true,"body":null,"message":null,"returnCode":null,"detailMessage":null,"detailMessageMap":null,"resultData":[{"adprodexpssCd":"APTX01","unitDesc":"M_메인_리빙푸드_컨텐츠형광고","adprodNm":"[모바일]메인_리빙푸드_컨텐츠형","startDttm":"2016.07.11.","endDttm":"2016.07.17.","target":"없음","buyQty":"1구좌","occupyPct":"6.66","detailMny":"3,000,000","finalMny":"3,000,000","brandsaQc":"0","adResult":{"success":true,"body":null,"message":"성공","returnCode":null,"detailMessage":null,"detailMessageMap":null}}]}
         $responseJson = $response->getBody();
         $responseObject = json_decode($responseJson);
         if ($responseObject->success != true) {
             dump($responseObject);
-//            throw new \Exception("create failed.");
+            // TODO: throw?
         }
+        dump(json_decode($responseJson));
     }
 }

@@ -43,7 +43,7 @@ class AdInput implements \JsonSerializable
 //"incMny": "0",
     public $incMny = "0";
 //"decPct": "0.6",
-    public $decPct = "0.6";
+    public $decPct = "1";
 //"decMny": "0",
     public $decMny = "0";
 

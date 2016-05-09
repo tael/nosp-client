@@ -1,8 +1,9 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-use Tael\Nosp\NospClient;
 use Tael\Nosp\Credential;
+use Tael\Nosp\FashionAdInput;
+use Tael\Nosp\NospClient;
 
 $e = new Dotenv\Dotenv(__DIR__ . '/..');
 $e->load();
@@ -18,8 +19,27 @@ $nosp = new NospClient(
 );
 
 $nosp->auth();
-$nosp->create();
 
-//dump($nosp);
-echo 'OK';
+
+// from #USER
+$campId = "1133235";
+// 날짜
+// from #USER
+$startDttm = "20160718000000";
+$endDttm = "20160724235959";
+// 집행금액 아이디
+// from #price by $campId
+$executePriceId = "11008162";
+
+
+
+$adInput = new FashionAdInput();
+$adInput->executePriceId = $executePriceId;
+$adInput->startDttm = $startDttm;
+$adInput->endDttm = $endDttm;
+
+
+$nosp->create($adInput, $campId, "AMS01");
+
+echo 'DONE';
 
