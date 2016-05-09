@@ -1,5 +1,5 @@
 <?php
-namespace Tael\Nosp;
+namespace Tael\Nosp\Data;
 
 // TODO: json 을 클래스로 잘!?
 class AdInput implements \JsonSerializable

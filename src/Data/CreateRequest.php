@@ -1,7 +1,7 @@
 <?php
-namespace Tael\Nosp;
+namespace Tael\Nosp\Data;
 
-class CreateRequestData
+class CreateRequest
 {
     public $adMngStep;
     /**
@@ -11,7 +11,7 @@ class CreateRequestData
     public $campId = "";
 
     /**
-     * CreateRequestData constructor.
+     * CreateRequest constructor.
      * @param string $adMngStep
      * @param string $campId
      */

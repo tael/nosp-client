@@ -1,6 +1,6 @@
 <?php
 
-namespace Tael\Nosp;
+namespace Tael\Nosp\Data;
 
 class FashionAdInput extends AdInput
 {

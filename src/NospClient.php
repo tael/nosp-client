@@ -2,6 +2,10 @@
 namespace Tael\Nosp;
 
 use GuzzleHttp\Client;
+use Tael\Nosp\Data\AdInput;
+use Tael\Nosp\Data\CreateRequest;
+use Tael\Nosp\Data\Credential;
+use Tael\Nosp\Data\FashionPriceRequest;
 
 class NospClient
 {
@@ -23,21 +27,6 @@ class NospClient
 
     public function auth()
     {
-//POST /sso/auth HTTP/1.1
-//Host: ndim.da.naver.com
-//Connection: keep-alive
-//Content-Length: 366
-//Cache-Control: max-age=0
-//Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
-//Origin: http://nosp.da.naver.com
-//Upgrade-Insecure-Requests: 1
-//User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36
-//Content-Type: application/x-www-form-urlencoded
-//Referer: http://nosp.da.naver.com/center/login/form;jsessionid=9EAE6CD6100422F7FE64D110D449E280
-//Accept-Encoding: gzip, deflate
-//Accept-Language: ko-KR,ko;q=0.8,en-US;q=0.6,en;q=0.4
-//Cookie: npic=WQM/Mc0OPEFI87az7fRX1UXZyBWsER2ewYfQpEEE+VqEA2/OWdie62JmZL474gpXCA==; NNB=APOZ6IPK7N5VK
-
         $response = $this->client->post(
             'https://ndim.da.naver.com/sso/auth',
             [
@@ -50,8 +39,6 @@ class NospClient
                 ],
             ]
         );
-//        dump($response->getStatusCode());
-//        echo($response->getBody());
         // TODO: keep-alive
         // TODO: how to check success?
     }
@@ -64,7 +51,7 @@ class NospClient
 //        dump($realJson);
 //        die;
 
-        $requestData = new CreateRequestData($adMngStep, $campId);
+        $requestData = new CreateRequest($adMngStep, $campId);
         $requestData->addItem($adInput);
         $json = json_encode($requestData);
 //        assert($realJson==$json);
@@ -86,5 +73,28 @@ class NospClient
             // TODO: throw?
         }
         dump(json_decode($responseJson));
+    }
+
+    public function getPrice(FashionPriceRequest $request)
+    {
+        $response = $this->client->post(
+            'http://nosp.da.naver.com/center/sales/adtool/price?_JSON-TYPE_-REQ_=Y',
+            [
+                // TODO: ArrayAccess 할줄 몰라서 그냥 노가다 함.
+                'form_params' => [
+                    'saleunitId' => $request->saleunitId,
+                    'unitId' => $request->unitId,
+                    'unittypeCd' => $request->unittypeCd,
+                    'paymentCd' => $request->paymentCd,
+                    'adprodCd' => $request->adprodCd,
+                    'bizcatNo' => $request->bizcatNo,
+                    'currencyCd' => $request->currencyCd,
+                    'startDttm' => $request->startDttm,
+                    'endDttm' => $request->endDttm,
+                    'targetCd' => $request->targetCd,
+                    'detailMny' => $request->detailMny,
+                ],
+            ]
+        );
     }
 }

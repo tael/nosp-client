@@ -1,8 +1,8 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-use Tael\Nosp\Credential;
-use Tael\Nosp\FashionAdInput;
+use Tael\Nosp\Data\Credential;
+use Tael\Nosp\Data\FashionAdInput;
 use Tael\Nosp\NospClient;
 
 $e = new Dotenv\Dotenv(__DIR__ . '/..');
@@ -29,8 +29,8 @@ $startDttm = "20160718000000";
 $endDttm = "20160724235959";
 // 집행금액 아이디
 // from #price by $campId
+$nosp->getPrice('20160725000000');
 $executePriceId = "11008162";
-
 
 
 $adInput = new FashionAdInput();

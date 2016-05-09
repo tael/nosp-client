@@ -1,5 +1,5 @@
 <?php
-namespace Tael\Nosp;
+namespace Tael\Nosp\Data;
 
 
 class Credential
