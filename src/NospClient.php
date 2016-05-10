@@ -5,7 +5,8 @@ use GuzzleHttp\Client;
 use Tael\Nosp\Data\AdInput;
 use Tael\Nosp\Data\CreateRequest;
 use Tael\Nosp\Data\Credential;
-use Tael\Nosp\Data\FashionPriceRequest;
+use Tael\Nosp\Data\PriceRequest;
+use Tael\Nosp\Data\PriceResponse;
 
 class NospClient
 {
@@ -75,26 +76,19 @@ class NospClient
         dump(json_decode($responseJson));
     }
 
-    public function getPrice(FashionPriceRequest $request)
+    public function getPrice(PriceRequest $request)
     {
         $response = $this->client->post(
             'http://nosp.da.naver.com/center/sales/adtool/price?_JSON-TYPE_-REQ_=Y',
-            [
-                // TODO: ArrayAccess 할줄 몰라서 그냥 노가다 함.
-                'form_params' => [
-                    'saleunitId' => $request->saleunitId,
-                    'unitId' => $request->unitId,
-                    'unittypeCd' => $request->unittypeCd,
-                    'paymentCd' => $request->paymentCd,
-                    'adprodCd' => $request->adprodCd,
-                    'bizcatNo' => $request->bizcatNo,
-                    'currencyCd' => $request->currencyCd,
-                    'startDttm' => $request->startDttm,
-                    'endDttm' => $request->endDttm,
-                    'targetCd' => $request->targetCd,
-                    'detailMny' => $request->detailMny,
-                ],
-            ]
+            ['form_params' => (array)$request]
         );
+        /** @var PriceResponse $o */
+        $o = json_decode($response->getBody());
+//        dump($o);
+        /** @var PriceResult $rd */
+        $rd=$o->resultData;
+//        dump($rd);
+        return $rd->executePriceId;
+//        die;
     }
 }

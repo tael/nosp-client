@@ -22,14 +22,16 @@ $nosp->auth();
 
 
 // from #USER
+// 캠페인 아이디
 $campId = "1133235";
 // 날짜
-// from #USER
 $startDttm = "20160718000000";
 $endDttm = "20160724235959";
 // 집행금액 아이디
 // from #price by $campId
-$nosp->getPrice('20160725000000');
+$ex = $nosp->getPrice(new \Tael\Nosp\Data\FashionPriceRequest($startDttm, $endDttm));
+echo $ex;
+die;
 $executePriceId = "11008162";
 
 
