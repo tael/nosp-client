@@ -3,6 +3,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Tael\Nosp\Data\Credential;
 use Tael\Nosp\Data\FashionAdInput;
+use Tael\Nosp\Data\FashionPriceRequest;
 use Tael\Nosp\NospClient;
 
 $e = new Dotenv\Dotenv(__DIR__ . '/..');
@@ -20,28 +21,25 @@ $nosp = new NospClient(
 
 $nosp->auth();
 
-
 // from #USER
-// 캠페인 아이디
 $campId = "1133235";
-// 날짜
-$startDttm = "20160718000000";
-$endDttm = "20160724235959";
-// 집행금액 아이디
-// from #price by $campId
-$ex = $nosp->getPrice(new \Tael\Nosp\Data\FashionPriceRequest($startDttm, $endDttm));
-echo $ex;
-die;
-$executePriceId = "11008162";
+$campaign = $nosp->getCampaign($campId);
+
+$executePriceId = $nosp->getPrice(
+    new FashionPriceRequest(
+        date_create($campaign->campstartYmdt),
+        date_create($campaign->campendYmdt)
+    )
+);
 
 
 $adInput = new FashionAdInput();
 $adInput->executePriceId = $executePriceId;
-$adInput->startDttm = $startDttm;
-$adInput->endDttm = $endDttm;
+$adInput->startDttm = date_create($campaign->campstartYmdt);
+$adInput->endDttm = date_create($campaign->campendYmdt);
 
-
-$nosp->create($adInput, $campId, "AMS01");
+die;
+$nosp->create($adInput, $campaign->campId, "AMS01");
 
 echo 'DONE';
 

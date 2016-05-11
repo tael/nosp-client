@@ -3,10 +3,12 @@ namespace Tael\Nosp;
 
 use GuzzleHttp\Client;
 use Tael\Nosp\Data\AdInput;
+use Tael\Nosp\Data\Campaign;
 use Tael\Nosp\Data\CreateRequest;
 use Tael\Nosp\Data\Credential;
 use Tael\Nosp\Data\PriceRequest;
 use Tael\Nosp\Data\PriceResponse;
+use Tael\Nosp\Data\PriceResult;
 
 class NospClient
 {
@@ -28,7 +30,7 @@ class NospClient
 
     public function auth()
     {
-        $response = $this->client->post(
+        $this->client->post(
             'https://ndim.da.naver.com/sso/auth',
             [
                 'form_params' => [
@@ -46,17 +48,9 @@ class NospClient
 
     public function create(AdInput $adInput, $campId, $adMngStep)
     {
-//        {"adMngStep":"AMS01","listAdInput":[{"saleunitId":"1254A_GT1","unitId":"1254A","unitDesc":"M_메인_패션뷰티_컨텐츠형광고","paymentCd":"PM3","adtypeCd":"LA2","adprodexpssCd":"APTX01","adprodCd":"P398","adprodNm":"[모바일]메인_패션뷰티_컨텐츠형","startDttm":"20160718000000","endDttm":"20160724235959","targetCd":"","freqCd":"","freqVal":"","detailMny":"5000000","priceMny":"5000000","finalMny":"5000000","incPct":"1","incMny":"0","decPct":"1","decMny":"0","executePriceId":"11008162","totalInv":"8","availInv":"1","buyQty":"1","tokenId":"","brandsaNo":"0","brandsaQc":"0","brandsaKwdGrpId":"","bidId":"","videolivetokenId":"","parentUnitId":""}],"campId":"1133260"}
-//        $realJson='{"adMngStep":"AMS01","listAdInput":[{"saleunitId":"1254A_GT1","unitId":"1254A","unitDesc":"M_메인_패션뷰티_컨텐츠형광고","paymentCd":"PM3","adtypeCd":"LA2","adprodexpssCd":"APTX01","adprodCd":"P398","adprodNm":"[모바일]메인_패션뷰티_컨텐츠형","startDttm":"20160718000000","endDttm":"20160724235959","targetCd":"","freqCd":"","freqVal":"","detailMny":"5000000","priceMny":"5000000","finalMny":"5000000","incPct":"1","incMny":"0","decPct":"1","decMny":"0","executePriceId":"11008162","totalInv":"8","availInv":"1","buyQty":"1","tokenId":"","brandsaNo":"0","brandsaQc":"0","brandsaKwdGrpId":"","bidId":"","videolivetokenId":"","parentUnitId":""}],"campId":"1133260"}';
-//        $realJson = json_encode(json_decode($realJson));
-//        dump($realJson);
-//        die;
-
         $requestData = new CreateRequest($adMngStep, $campId);
         $requestData->addItem($adInput);
         $json = json_encode($requestData);
-//        assert($realJson==$json);
-//        dump($json); die;
         $response = $this->client->post(
             'http://nosp.da.naver.com/center/sales/campaign/adline/create?_JSON-TYPE_-REQ_=Y',
             [
@@ -82,13 +76,37 @@ class NospClient
             'http://nosp.da.naver.com/center/sales/adtool/price?_JSON-TYPE_-REQ_=Y',
             ['form_params' => (array)$request]
         );
-        /** @var PriceResponse $o */
-        $o = json_decode($response->getBody());
-//        dump($o);
-        /** @var PriceResult $rd */
-        $rd=$o->resultData;
-//        dump($rd);
-        return $rd->executePriceId;
-//        die;
+        // TODO: 에러핸들링
+        /** @var PriceResponse $priceResponse */
+        $priceResponse = json_decode($response->getBody());
+        /** @var PriceResult $resultData */
+        $resultData = $priceResponse->resultData;
+        $executePriceId = $resultData->executePriceId;
+        if ($executePriceId == "") {
+            dump($priceResponse);
+            dump($resultData);
+            throw new \Exception("can not find executeId");
+        }
+        return $executePriceId;
+    }
+
+    public function getCampaign($campId)
+    {
+        $response = $this->client->get(
+            'http://nosp.da.naver.com/center/sales/campaign/list/data.json'
+            . '?_JSON-TYPE_-REQ_=Y'
+            . '&mntgstatCd=&campstartYmdt=&campendYmdt=&statCd=B1&statCd=B2&statCd=B3&statCd=B6'
+            . '&cond=campId&campNm=&campId=' . $campId
+            . '&brandNm=&sponsorNm=&reguserNm=&condVal=' . $campId
+            . '&_search=false&nd=1462935536906&rows=10&page=1&sidx=&sord=&_JSON-TYPE_-REQ_=Y'
+        );
+        /** @var Campaign[] $list */
+        $list = json_decode($response->getBody())->data->list;
+        foreach ($list as $item) {
+            if ($item->campId == $campId) {
+                return $item;
+            }
+        }
+        throw new \Exception("can not find campaign");
     }
 }
