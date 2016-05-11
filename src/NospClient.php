@@ -51,6 +51,7 @@ class NospClient
         $requestData = new CreateRequest($adMngStep, $campId);
         $requestData->addItem($adInput);
         $json = json_encode($requestData);
+//        dump($json);die;
         $response = $this->client->post(
             'http://nosp.da.naver.com/center/sales/campaign/adline/create?_JSON-TYPE_-REQ_=Y',
             [
@@ -67,7 +68,17 @@ class NospClient
             dump($responseObject);
             // TODO: throw?
         }
-        dump(json_decode($responseJson));
+        dump($responseObject);
+        $resultData = $responseObject->resultData;
+
+        foreach ($resultData as $item) {
+            $adResult = $item->adResult;
+            dump($adResult);
+            if ($adResult->message == "실패 (사유 : 인벤토리 기간 범위를 벗어남)") {
+                throw new InventoryRangeException();
+            }
+        }
+
     }
 
     public function getPrice(PriceRequest $request)
@@ -90,7 +101,7 @@ class NospClient
         return $executePriceId;
     }
 
-    public function getCampaign($campId)
+    public function createCampaign($campId)
     {
         $response = $this->client->get(
             'http://nosp.da.naver.com/center/sales/campaign/list/data.json'
