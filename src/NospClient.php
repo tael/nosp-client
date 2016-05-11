@@ -13,7 +13,7 @@ use Tael\Nosp\Data\PriceResult;
 class NospClient
 {
     /**
-     * @var \GuzzleHttp\Client
+     * @var Client
      */
     private $client;
     /**
@@ -66,9 +66,9 @@ class NospClient
         $responseObject = json_decode($responseJson);
         if ($responseObject->success != true) {
             dump($responseObject);
-            // TODO: throw?
+            throw new NospException("Unknown: create result = failed");
         }
-        dump($responseObject);
+//        dump($responseObject);
         $resultData = $responseObject->resultData;
 
         foreach ($resultData as $item) {
@@ -101,7 +101,11 @@ class NospClient
         return $executePriceId;
     }
 
-    public function createCampaign($campId)
+    /**
+     * @param $campId
+     * @return Campaign
+     */
+    public function loadCampaign($campId)
     {
         $response = $this->client->get(
             'http://nosp.da.naver.com/center/sales/campaign/list/data.json'
@@ -118,6 +122,18 @@ class NospClient
                 return $item;
             }
         }
-        throw new \Exception("can not find campaign");
+        throw new CampaignNotFoundException("can not find campaign");
+    }
+
+    public static function createDefaultClient(Credential $credential)
+    {
+        return new self(
+            new Client([
+                'cookies' => true,
+                'headers' => [
+                    'User-Agent' => 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)', // IE10
+                ]
+            ]),
+            $credential);
     }
 }

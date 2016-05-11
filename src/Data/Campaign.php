@@ -23,4 +23,15 @@ class Campaign
     public $sponsorNm;
     public $statCd;
     public $svcMny;
+
+    public function getStartDateTime()
+    {
+        return new \DateTime($this->campstartYmdt);
+    }
+
+    public function getEndDateTime()
+    {
+        return new \DateTime($this->campendYmdt);
+    }
+
 }
