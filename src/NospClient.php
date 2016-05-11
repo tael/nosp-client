@@ -2,6 +2,7 @@
 namespace Tael\Nosp;
 
 use GuzzleHttp\Client;
+use JsonMapper;
 use Tael\Nosp\Data\AdInput;
 use Tael\Nosp\Data\Campaign;
 use Tael\Nosp\Data\CreateRequest;
@@ -26,6 +27,7 @@ class NospClient
     {
         $this->client = $client;
         $this->credential = $credential;
+        $this->jsonMapper = new JsonMapper();
     }
 
     public function auth()
@@ -119,27 +121,8 @@ class NospClient
         $list = json_decode($response->getBody())->data->list;
         foreach ($list as $item) {
             if ($item->campId == $campId) {
-                return new Campaign(
-                    $item->bizcatNm,
-                    $item->brandNm,
-                    $item->campId,
-                    $item->campNm,
-                    $item->campPeriod,
-                    $item->campPeriodForExcel,
-                    $item->campendYmdt,
-                    $item->campendYmdtStr,
-                    $item->campstartYmdt,
-                    $item->campstartYmdtStr,
-                    $item->ctrtMny,
-                    $item->lcatNm,
-                    $item->mntgstatCd,
-                    $item->needUserConfirmMonitoringYN,
-                    $item->reguserNm,
-                    $item->scatNm,
-                    $item->sponsorNm,
-                    $item->statCd,
-                    $item->svcMny
-                );
+                dump($item);
+                return $this->jsonMapper->map($item, new Campaign());
             }
         }
         throw new CampaignNotFoundException("can not find campaign");

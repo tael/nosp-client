@@ -22,7 +22,6 @@ $adInput = new FashionAdInput(
     $nosp->getPrice(new FashionPriceRequest($campaign->getStartDateTime(), $campaign->getEndDateTime()))
 );
 
-
 $repeat = true;
 while ($repeat) {
     try {
