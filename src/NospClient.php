@@ -119,7 +119,27 @@ class NospClient
         $list = json_decode($response->getBody())->data->list;
         foreach ($list as $item) {
             if ($item->campId == $campId) {
-                return $item;
+                return new Campaign(
+                    $item->bizcatNm,
+                    $item->brandNm,
+                    $item->campId,
+                    $item->campNm,
+                    $item->campPeriod,
+                    $item->campPeriodForExcel,
+                    $item->campendYmdt,
+                    $item->campendYmdtStr,
+                    $item->campstartYmdt,
+                    $item->campstartYmdtStr,
+                    $item->ctrtMny,
+                    $item->lcatNm,
+                    $item->mntgstatCd,
+                    $item->needUserConfirmMonitoringYN,
+                    $item->reguserNm,
+                    $item->scatNm,
+                    $item->sponsorNm,
+                    $item->statCd,
+                    $item->svcMny
+                );
             }
         }
         throw new CampaignNotFoundException("can not find campaign");
