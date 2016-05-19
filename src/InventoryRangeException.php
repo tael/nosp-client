@@ -2,7 +2,7 @@
 
 namespace Tael\Nosp;
 
-class InventoryRangeException extends \RuntimeException
+class InventoryRangeException extends NospException
 {
 
     /**

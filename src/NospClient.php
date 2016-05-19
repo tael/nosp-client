@@ -48,6 +48,11 @@ class NospClient
         // TODO: how to check success?
     }
 
+    /**
+     * @param AdInput $adInput
+     * @param $campId
+     * @param $adMngStep
+     */
     public function create(AdInput $adInput, $campId, $adMngStep)
     {
         $requestData = new CreateRequest($adMngStep, $campId);
@@ -65,22 +70,33 @@ class NospClient
             ]
         );
         $responseJson = $response->getBody();
+        // response 에 대한 클래스는 귀찮아서 생략한다.
         $responseObject = json_decode($responseJson);
         if ($responseObject->success != true) {
-            dump($responseObject);
-            throw new NospException("Unknown: create result = failed");
+            if ($responseObject->message == "집행전, 집행중 상태의 캠페인만 광고등록이 가능합니다.") {
+                throw new CreateFailException($responseObject->message);
+            }
         }
-//        dump($responseObject);
         $resultData = $responseObject->resultData;
 
         foreach ($resultData as $item) {
             $adResult = $item->adResult;
             dump($adResult);
+            // result 에 대한 클래스는 귀찮아서 생략한다.
             if ($adResult->message == "실패 (사유 : 인벤토리 기간 범위를 벗어남)") {
                 throw new InventoryRangeException();
             }
+            if ($adResult->message == "실패 (사유 : 가용 인벤토리 확보 실패)") {
+                throw new InventoryNotEnoughException();
+            }
+            if ($adResult->message == "실패 (사유 : 업종 서비스금액 제외 구매 가능 금액 초과)") {
+               
+            }
+            // TODO: "성공" 인지 "성공." 인지 헷갈려서 일단 주석 처리 .
+//            if ($adResult->message != "성공") {
+//                throw new CreateFailException($adResult->message);
+//            }
         }
-
     }
 
     public function getPrice(PriceRequest $request)
@@ -98,7 +114,7 @@ class NospClient
         if ($executePriceId == "") {
             dump($priceResponse);
             dump($resultData);
-            throw new \Exception("can not find executeId");
+            throw new NospException("can not find executeId");
         }
         return $executePriceId;
     }
