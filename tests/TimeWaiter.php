@@ -17,6 +17,7 @@ class Test
         $waiter = new \Tael\Nosp\TimeWaiter($startTime);
 // sleep 4 sec
         $waiter->waitUntil($destination);
+        echo "OK";
     }
 
     public function test2()
@@ -25,6 +26,7 @@ class Test
         $nosp = new \Tael\Nosp\ServerTime(new \GuzzleHttp\Client());
         $serverTime = $nosp->getServerDateTime('nosp.da.naver.com');
         $serverTime->sub($second); // 서버시간에서 1초 빼서.
+//        var_dump($serverTime);
 
         $curTime = new DateTime();
         $curTime->setTime(18, 01, 00);
@@ -37,5 +39,5 @@ class Test
 }
 
 $t = new Test();
-//$t->test1();
-$t->test2();
+$t->test1();
+//$t->test2();

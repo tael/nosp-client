@@ -29,7 +29,7 @@ class TimeWaiter
             $currentDateTime->sub($this->diffInterval);
 //            dump($currentDateTime->format('s'));
 //            dump($currentDateTime);
-            if ($currentDateTime == $destinationTime) {
+            if ($currentDateTime >= $destinationTime) {
 //                dump($destinationTime);
 //                echo "END";
                 break;

@@ -3,6 +3,7 @@
 namespace Tael\Nosp;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Tael\Nosp\Data\Credential;
 use Tael\Nosp\Data\FashionAdInput;
 use Tael\Nosp\Data\FashionPriceRequest;
@@ -50,7 +51,11 @@ class MobileFashionBookingClient
         $serverTime = $nosp->getServerDateTime('nosp.da.naver.com');
         $serverTime->sub($second);
 
-        $openTime = (new \DateTime())->setTime(10, 59, 59);
+        $openTime = (new \DateTime());
+        $openTime->setTimezone($serverTime->getTimezone());
+        $openTime->setTime(10, 59, 59);
+//        var_dump($serverTime);
+//        var_dump($openTime);
 
         $waiter = new TimeWaiter($serverTime);
         $waiter->waitUntil($openTime);
@@ -67,6 +72,8 @@ class MobileFashionBookingClient
                 // 기간 실패일 경우 반복 재시도
                 // retry after 0.1 sec
                 usleep(100000);
+            } catch (RequestException $e) {
+                echo 'ERROR RequestException: ' . $this->campaign->campId . ' : ' . $e->getMessage();
             }
         }
     }
