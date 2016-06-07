@@ -46,7 +46,7 @@ class MobileFashionBookingClient
 
     public function waitOpenTime()
     {
-        $second = new \DateInterval('PT3S'); // 3 sec
+        $second = new \DateInterval('PT5S'); // 5 sec
         $nosp = new ServerTime(new Client());
         $serverTime = $nosp->getServerDateTime('nosp.da.naver.com');
         $serverTime->sub($second);
@@ -70,8 +70,8 @@ class MobileFashionBookingClient
                 $retry = false;
             } catch (\Tael\Nosp\InventoryRangeException $e) {
                 // 기간 실패일 경우 반복 재시도
-                // retry after 0.1 sec
-                usleep(100000);
+                // retry after 0.05 sec
+                usleep(500000);
             } catch (RequestException $e) {
                 echo 'ERROR RequestException: ' . $this->campaign->campId . ' : ' . $e->getMessage();
             }
