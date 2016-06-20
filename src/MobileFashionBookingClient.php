@@ -68,10 +68,10 @@ class MobileFashionBookingClient
             try {
                 $this->nospClient->create($this->adInput, $this->campaign->campId, "AMS01");
                 $retry = false;
-            } catch (\Tael\Nosp\InventoryRangeException $e) {
+            } catch (InventoryRangeException $e) {
                 // 기간 실패일 경우 반복 재시도
-                // retry after 0.05 sec
-                usleep(500000);
+                // retry after 0.01 sec
+                usleep(100000);
             } catch (RequestException $e) {
                 echo 'ERROR RequestException: ' . $this->campaign->campId . ' : ' . $e->getMessage();
             }

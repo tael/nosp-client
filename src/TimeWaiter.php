@@ -36,8 +36,5 @@ class TimeWaiter
             }
 //            dump($this->diffInterval);
         }
-
-//        bool time_sleep_until ( float $timestamp )
-
     }
 }
