@@ -34,6 +34,7 @@ class TimeWaiter
 //                echo "END";
                 break;
             }
+            usleep(100);
 //            dump($this->diffInterval);
         }
     }
