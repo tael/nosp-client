@@ -29,13 +29,14 @@ class TimeWaiter
             $currentDateTime->sub($this->diffInterval);
 //            dump($currentDateTime->format('s'));
 //            dump($currentDateTime);
+//            dump($destinationTime);
+//            dump($this->diffInterval);
             if ($currentDateTime >= $destinationTime) {
 //                dump($destinationTime);
 //                echo "END";
                 break;
             }
             usleep(100);
-//            dump($this->diffInterval);
         }
     }
 }

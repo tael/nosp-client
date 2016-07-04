@@ -2,10 +2,10 @@
 require __DIR__ . '/bootstrap.php';
 $campaignId = "1134074";
 
-$client = new \Tael\Nosp\MobileFashionBookingClient(
-    getenv('NOSP_ID'), getenv('NOSP_PW'), getenv('NOSP_SECRET'),
-    $campaignId);
-// 대충 3~5초 전
+$id = getenv('NOSP_ID');
+$pw = getenv('NOSP_PW');
+$encPw = getenv('NOSP_SECRET');
+$client = new \Tael\Nosp\MobileFashionBookingClient($id, $pw, $encPw, $campaignId);
 $client->waitOpenTime();
-$client->repeat();
+//$client->repeat();
 echo 'DONE';
