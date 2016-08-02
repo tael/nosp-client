@@ -1,9 +1,14 @@
+#!/usr/bin/env php
 <?php
 // TODO: change to parameters
+require __DIR__ . '/../vendor/autoload.php';
+
 $campaignId = "1138289";
-require __DIR__ . '/bootstrap.php';
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Logger;
+$e = new Dotenv\Dotenv(__DIR__ . '/..');
+$e->load();
+
 
 $client = new \Tael\Nosp\MobileFashionBookingClient(
     getenv('NOSP_ID'), getenv('NOSP_PW'), getenv('NOSP_SECRET'),
