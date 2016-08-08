@@ -24,7 +24,7 @@ class Test
     {
         $second = new DateInterval('PT1S');
         $nosp = new \Tael\Nosp\ServerTime(new \GuzzleHttp\Client());
-        $serverTime = $nosp->getServerDateTime('nosp.da.naver.com');
+        $serverTime = $nosp->getServerDateTime('http://nosp.da.naver.com');
         $serverTime->sub($second); // 서버시간에서 1초 빼서.
 //        var_dump($serverTime);
 

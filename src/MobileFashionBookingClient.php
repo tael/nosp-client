@@ -48,7 +48,7 @@ class MobileFashionBookingClient
     {
         $second = new \DateInterval('PT5S'); // 5 sec
         $nosp = new ServerTime(new Client());
-        $serverTime = $nosp->getServerDateTime('nosp.da.naver.com');
+        $serverTime = $nosp->getServerDateTime('http://nosp.da.naver.com');
 
         $openTime = (new \DateTime());
         $openTime->setTimezone($serverTime->getTimezone());
