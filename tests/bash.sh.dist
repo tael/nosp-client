@@ -1,0 +1,4 @@
+#!/bin/sh
+php ./real.php 1234 &
+php ./real.php 5678 &
+

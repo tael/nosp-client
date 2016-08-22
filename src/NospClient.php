@@ -90,7 +90,7 @@ class NospClient
                 throw new InventoryNotEnoughException();
             }
             if ($adResult->message == "실패 (사유 : 업종 서비스금액 제외 구매 가능 금액 초과)") {
-               
+                throw new NeedMoreMoneyException();
             }
             // TODO: "성공" 인지 "성공." 인지 헷갈려서 일단 주석 처리 .
 //            if ($adResult->message != "성공") {
