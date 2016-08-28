@@ -68,7 +68,7 @@ class MobileFashionBookingClient
                 $retry = false;
             } catch (InventoryRangeException $e) {
                 // 기간 실패일 경우 반복 재시도
-                // retry after 0.01 sec
+                //retry after 0.01 sec
                 usleep(100000);
             } catch (RequestException $e) {
                 echo 'ERROR RequestException: ' . $this->campaign->campId . ' : ' . $e->getMessage();
