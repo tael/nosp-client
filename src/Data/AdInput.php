@@ -4,6 +4,10 @@ namespace Tael\Nosp\Data;
 // TODO: json 을 클래스로 잘!?
 class AdInput implements \JsonSerializable
 {
+
+//adGroupId : "10002"
+//    public $adGroupId = "10002";
+
 //"saleunitId": "1241B_GT1",
     public $saleunitId = "1241B_GT1";
 //"unitId": "1241B",
