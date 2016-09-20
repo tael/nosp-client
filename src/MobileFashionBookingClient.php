@@ -46,13 +46,13 @@ class MobileFashionBookingClient
 
     public function waitOpenTime()
     {
-        $second = new \DateInterval('PT5S'); // 5 sec
+        $second = new \DateInterval('PT2S'); // 2 sec
         $nosp = new ServerTime(new Client());
         $serverTime = $nosp->getServerDateTime('http://nosp.da.naver.com');
 
         $openTime = (new \DateTime());
         $openTime->setTimezone($serverTime->getTimezone());
-        $openTime->setTime(10, 59, 59);
+        $openTime->setTime(11, 00, 00);
         $openTime->sub($second);
 
         $waiter = new TimeWaiter($serverTime);
