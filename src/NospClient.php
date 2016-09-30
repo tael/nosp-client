@@ -125,6 +125,24 @@ class NospClient
      */
     public function loadCampaign($campId)
     {
+//        $x='http://nosp.da.naver.com/center/sales/adtool/form/unit/grid/data.json
+//        ?_JSON-TYPE_-REQ_=Y
+//        &adMngStep=AMS03
+//        &campId=
+//        &prplId=
+//        &bizcatNo=10046
+//        &adprodtpNo=15
+//        &unitDesc=
+//        &guaranteeCd=
+//        &paymentCd=
+//        &timeboardYn=N
+//        &_search=false
+//        &nd=1475203504325
+//        &rows=10
+//        &page=1
+//        &sidx=
+//        &sord=asc
+//        &_JSON-TYPE_-REQ_=Y';
         $response = $this->client->get(
             'http://nosp.da.naver.com/center/sales/campaign/list/data.json'
             . '?_JSON-TYPE_-REQ_=Y'

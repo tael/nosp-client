@@ -13,7 +13,8 @@ class FashionAdInput extends AdInput
     public $adprodCd = "P491";
 //
 //    public $adprodNm = "[모바일]메인_패션뷰티_컨텐츠형"; // before
-    public $adprodNm = "[모바일]메인_컨텐츠형(신)";
+//    public $adprodNm = "[모바일]메인_컨텐츠형(신)";
+    public $adprodNm = "컨텐츠_메인형";
 
     public $paymentCd = "PM3";
     public $adtypeCd = "LA2";
