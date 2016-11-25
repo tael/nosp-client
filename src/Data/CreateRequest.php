@@ -3,7 +3,6 @@ namespace Tael\Nosp\Data;
 
 class CreateRequest
 {
-    public $adMngStep;
     /**
      * @var AdInput[]
      */
@@ -12,12 +11,10 @@ class CreateRequest
 
     /**
      * CreateRequest constructor.
-     * @param string $adMngStep
      * @param string $campId
      */
-    public function __construct($adMngStep, $campId)
+    public function __construct($campId)
     {
-        $this->adMngStep = $adMngStep;
         $this->listAdInput = [];
         $this->campId = $campId;
     }

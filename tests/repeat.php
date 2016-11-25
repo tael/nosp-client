@@ -17,7 +17,7 @@ $adInput = new FashionAdInput(
 $repeat = true;
 while ($repeat) {
     try {
-        $nosp->create($adInput, $campaign->campId, "AMS01");
+        $nosp->create($adInput, $campaign->campId);
         $repeat = false;
     } catch (\Tael\Nosp\InventoryRangeException $e) {
         // 기간 실패일 경우 반복 재시도

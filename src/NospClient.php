@@ -51,11 +51,10 @@ class NospClient
     /**
      * @param AdInput $adInput
      * @param $campId
-     * @param $adMngStep
      */
-    public function create(AdInput $adInput, $campId, $adMngStep)
+    public function create(AdInput $adInput, $campId)
     {
-        $requestData = new CreateRequest($adMngStep, $campId);
+        $requestData = new CreateRequest($campId);
         $requestData->addItem($adInput);
         $json = json_encode($requestData);
 //        dump($json);die;
