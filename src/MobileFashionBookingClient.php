@@ -59,13 +59,20 @@ class MobileFashionBookingClient
         $waiter->waitUntil($openTime);
     }
 
-    public function repeat()
+    public function repeat($ignoreInventoryNotEnoughException = false)
     {
         $retry = true;
         while ($retry) {
             try {
-                $this->nospClient->create($this->adInput, $this->campaign->campId, "AMS01");
+                $this->nospClient->create($this->adInput, $this->campaign->campId);
                 $retry = false;
+            } catch (InventoryNotEnoughException $e) {
+                if ($ignoreInventoryNotEnoughException === false) {
+                    throw $e;
+                }
+                // ignore on 12
+                echo 'InventoryNotEnoughException was raised: ignore it but please stop this process with KILL command when you need to done.' . PHP_EOL . $this->campaign->campId . ' : ' . $e->getMessage();
+                usleep(200000);
             } catch (InventoryRangeException $e) {
                 // 기간 실패일 경우 반복 재시도
                 //retry after 0.01 sec
